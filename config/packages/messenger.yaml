@@ -4,14 +4,31 @@ framework:
         # failure_transport: failed
 
         transports:
-            # https://symfony.com/doc/current/messenger.html#transport-configuration
-            async: '%env(MESSENGER_TRANSPORT_DSN)%'
-            # failed: 'doctrine://default?queue_name=failed'
-            # sync: 'sync://'
+            sms_notification:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                failure_transport: sms_notification_failure
+                retry_strategy:
+                    max_retries: 3
+                    delay: 1000
+                    multiplier: 2
+                    max_delay: 0
+                options:
+                    exchange:
+                        name: notifications
+                    queues:
+                        sms_notification: ~
+
+            sms_notification_failure:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN_FAILURE)%'
+                options:
+                    exchange:
+                        name: notifications
+                    queues:
+                        sms_notification_failure: ~
 
         routing:
             # Route your messages to the transports
-            'App\Messages\SmsNotification': async
+            'App\Messages\SmsNotification': sms_notification
 
 # when@test:
 #    framework:
