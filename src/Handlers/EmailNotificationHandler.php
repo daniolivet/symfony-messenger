@@ -10,6 +10,6 @@ class EmailNotificationHandler
 {
     public function __invoke(EmailNotification $message)
     {
-        dd('We are here!');
+        print_r("Sending Email to {$message->getTo()} from {$message->getFrom()} with content: {$message->getContent()}" . PHP_EOL);
     }
 }

@@ -31,7 +31,10 @@ RUN set -eux; \
 		intl \
 		opcache \
 		zip \
+		amqp \
 	;
+
+RUN docker-php-ext-enable amqp;
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER=1
